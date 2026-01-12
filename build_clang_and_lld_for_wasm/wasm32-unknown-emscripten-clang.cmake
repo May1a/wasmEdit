@@ -1,0 +1,22 @@
+set(CMAKE_SYSTEM_NAME Linux)
+set(CMAKE_SYSTEM_PROCESSOR wasm)
+
+set(CMAKE_C_COMPILER
+  $ENV{EMSDK}/upstream/emscripten/emcc)
+
+set(CMAKE_CXX_COMPILER
+  $ENV{EMSDK}/upstream/emscripten/em++)
+
+set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
+
+# Only set .js suffix for non-tablegen tools
+# We'll handle this differently below
+set(CMAKE_EXE_LINKER_FLAGS
+  "${CMAKE_EXE_LINKER_FLAGS} -s MODULARIZE=1 -s EXPORT_NAME='createClangModule' -s ALLOW_MEMORY_GROWTH=1 -s FORCE_FILESYSTEM=1 -s INITIAL_MEMORY=134217728"
+  CACHE STRING "" FORCE
+)
+
+set(CMAKE_IGNORE_PATH /opt/homebrew/lib /usr/lib /usr/local/lib CACHE STRING "")
