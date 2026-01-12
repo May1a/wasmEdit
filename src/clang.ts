@@ -476,6 +476,14 @@ class ClangInstance {
         }
     }
     public createExecutable(objectFiles: string[], outputPath: string) {
-        this.wasmLd.callMain([...objectFiles, "-o", outputPath]);
+        const tempPath = "/tmp" + Math.random().toString(36).substring(2, 15);
+        this.moveFilesFromClangFSToWasmLdFS(objectFiles, tempPath);
+        const args = [];
+        for (const file of objectFiles) {
+            args.push(tempPath + "/" + file);
+        }
+        args.push("-o", outputPath);
+        this.wasmLd.callMain(args);
+        this.wasmLd.FS.rmdir(tempPath);
     }
 }
